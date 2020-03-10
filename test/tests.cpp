@@ -59,19 +59,19 @@ long get_diff_dist(string file1, string file2){
 class ServerInitialize : public ::testing::Test{
 protected:
     Server srv;
-};
+}; //Passed
 
 TEST_F(ServerInitialize, Correct_Board_Size){
     ASSERT_NO_THROW(srv.initialize(BOARD_SIZE, "player_1.setup_board.txt", "player_2.setup_board.txt"));
-}
+} //Passed
 
 TEST_F(ServerInitialize, Wrong_Board_Size){
     ASSERT_ANY_THROW(srv.initialize(BOARD_SIZE-1, "player_1.setup_board.txt", "player_2.setup_board.txt"));
-}
+} //Passed
 
 TEST_F(ServerInitialize, Bad_File_Name){
     ASSERT_ANY_THROW(srv.initialize(BOARD_SIZE, "", ""));
-}
+} //Passed
 
 
 class ServerEvaluateShot : public ::testing::Test{
@@ -100,15 +100,15 @@ TEST_F(ServerEvaluateShot, Out_Of_Bounds_Y){
 
 TEST_F(ServerEvaluateShot, Max_In_Bounds){
     ASSERT_NO_THROW(srv.evaluate_shot(1,srv.board_size-1,srv.board_size-1));
-}
+} //Passed
 
 TEST_F(ServerEvaluateShot, Bad_Player_Number_Low){
     ASSERT_ANY_THROW(srv.evaluate_shot(0,0,0));
-}
+} //Passed
 
 TEST_F(ServerEvaluateShot, Bad_Player_Number_High){
     ASSERT_ANY_THROW(srv.evaluate_shot(MAX_PLAYERS+1,0,0));
-}
+} //Passed
 
 
 class ServerProcessShot : public ::testing::Test{
@@ -165,12 +165,12 @@ TEST_F(ServerProcessShot, Max_In_Bounds){
 TEST_F(ServerProcessShot, Bad_Player_Number_Low){
     set_up_shot(0, 0);
     ASSERT_ANY_THROW(srv.process_shot(0));
-}
+} //Passed
 
 TEST_F(ServerProcessShot, Bad_Player_Number_Low_High){
     set_up_shot(0, 0);
     ASSERT_ANY_THROW(srv.process_shot(MAX_PLAYERS+1));
-}
+} //Passed
 
 TEST_F(ServerProcessShot, Cleanup){
     set_up_shot(0,0);

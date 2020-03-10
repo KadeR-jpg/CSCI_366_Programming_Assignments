@@ -22,6 +22,14 @@ Client::~Client() {
 
 
 void Client::initialize(unsigned int player, unsigned int board_size){
+    if (board_size != 10){
+        board_size = 10;
+        throw exception(ClientException("Incorrect Board Size, corrected.\n"));
+    }else{
+
+    }
+
+
 }
 
 

@@ -25,7 +25,12 @@ int main(){
     cout << "Starting Battleship server" << endl;
 
     Server s;
-    s.initialize(BOARD_SIZE, "player_1.setup_board.txt", "player_2.setup_board.txt");
+    try {
+        s.initialize(BOARD_SIZE, "player_1.setup_board.txt", "player_2.setup_board.txt");
+    } catch (BOARD_SIZE) != 10)
+
+
+}
 
     // run the server process in a loop
     while(true){
