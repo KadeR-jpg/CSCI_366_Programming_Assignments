@@ -106,6 +106,7 @@ int Server::process_shot(unsigned int player) {
     } else {
         return NO_SHOT_FILE;
     }
+    //remove stuff
 
 
 }
