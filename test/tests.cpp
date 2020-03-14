@@ -92,11 +92,11 @@ TEST_F(ServerEvaluateShot, Miss_Detected){
 
 TEST_F(ServerEvaluateShot, Out_Of_Bounds_X){
     ASSERT_EQ(OUT_OF_BOUNDS, srv.evaluate_shot(1,srv.board_size+1,1));
-}
+} //Passed
 
 TEST_F(ServerEvaluateShot, Out_Of_Bounds_Y){
     ASSERT_EQ(OUT_OF_BOUNDS, srv.evaluate_shot(1,1,srv.board_size+1));
-}
+} //Passed
 
 TEST_F(ServerEvaluateShot, Max_In_Bounds){
     ASSERT_NO_THROW(srv.evaluate_shot(1,srv.board_size-1,srv.board_size-1));
@@ -189,13 +189,13 @@ protected:
     }
 
     void TearDown() override{
-        remove("player_1.action_board.json");
+//        remove("player_1.action_board.json");
     }
-};
+}; //Passed
 
 TEST_F(ClientInitialize, Creates_Action_Board){
     ASSERT_EQ(0, get_diff_dist("player_1.action_board.json", "correct_start_action_board.json"));
-}
+} //Passed
 
 
 class ClientFire : public ::testing::Test{
@@ -209,12 +209,12 @@ protected:
     void TearDown() override{
         remove("player_1.shot.json");
     }
-};
+}; //Passed
 
 TEST_F(ClientFire, Creates_Fire_Message){
     client.fire(0,1);
     ASSERT_EQ(0, get_diff_dist("player_1.shot.json", "correct_fire_message.json"));
-}
+} //Passed
 
 
 class ClientResultAvailable : public ::testing::Test{
@@ -237,16 +237,16 @@ protected:
     void TearDown() override{
         remove("player_1.result.json");
     }
-};
+}; //Passed
 
 TEST_F(ClientResultAvailable, NoResultFile){
    ASSERT_FALSE(client.result_available());
-}
+} //Passed
 
 TEST_F(ClientResultAvailable, GoodFile){
    set_up_result(HIT);
    ASSERT_TRUE(client.result_available());
-}
+} //Passed
 
 
 class ClientGetResult : public ::testing::Test{
@@ -274,22 +274,22 @@ protected:
 TEST_F(ClientGetResult, Return_Hit){
     set_up_result(HIT);
     ASSERT_EQ(HIT, client.get_result());
-}
+} //Passed
 
 TEST_F(ClientGetResult, Return_Miss){
     set_up_result(MISS);
     ASSERT_EQ(MISS, client.get_result());
-}
+} //Passed
 
 TEST_F(ClientGetResult, Return_Out_Of_Bounds){
     set_up_result(OUT_OF_BOUNDS);
     ASSERT_EQ(OUT_OF_BOUNDS, client.get_result());
-}
+} //Passed
 
 TEST_F(ClientGetResult, Catch_Bad_Result){
     set_up_result(999);
     ASSERT_ANY_THROW(client.get_result());
-}
+} //Passed
 
 TEST_F(ClientGetResult, Cleanup){
     set_up_result(HIT);
@@ -310,18 +310,18 @@ protected:
     void TearDown() override{
         remove("player_1.action_board.json");
     }
-};
+}; //Passed
 
 TEST_F(ClientUpdateActionBoard, Record_Hit){
     client.update_action_board(HIT, 0, 0);
     ASSERT_EQ(0, get_diff_dist("player_1.action_board.json", "correct_hit_action_board.json"));
-}
+} //Passed
 
 TEST_F(ClientUpdateActionBoard, Record_Miss){
     client.update_action_board(MISS, 0, 0);
 
     ASSERT_EQ(0, get_diff_dist("player_1.action_board.json", "correct_miss_action_board.json"));
-}
+} //Passed
 
 
 
