@@ -21,76 +21,26 @@ Client::~Client() {
 }
 
 
-void Client::initialize(unsigned int player, unsigned int board_size) {
-    this->player = player;
-    if(player < 1 || player > 2){
-        throw ClientWrongPlayerNumberException();
-    }//I could probably simplify this
-    if (board_size != 10) {
-        throw ClientException("Wrong board Size");
-    }else {
-        this->board_size = board_size;
-        string fileName = "player_" + to_string(player) + ".action_board.json";
-        remove(fileName.c_str());
-        vector<vector<int> > vec(board_size, vector<int>(board_size));
-        ofstream array_ofp(fileName);
-        cereal::JSONOutputArchive write_archive(array_ofp);
-        write_archive(cereal::make_nvp("board", vec));
-//    write_archive.finishNode();//Note to self, Cooper and mike said these are wack. Leave Commented out.
-//    array_ofp.close();
-    }
-
+void Client::initialize(unsigned int player, unsigned int board_size){
 }
 
 
 void Client::fire(unsigned int x, unsigned int y) {
-    string shotFile = "player_" + to_string(player) + ".shot.json";
-    ofstream array_ofp(shotFile);
-    cereal::JSONOutputArchive write_archive(array_ofp);
-    write_archive(cereal::make_nvp("x", x), cereal::make_nvp("y", y));
 }
 
 
 bool Client::result_available() {
-    ifstream shotFile("player_" + to_string(player) + ".result.json");
-    return !shotFile.fail();
-
 }
 
 
 int Client::get_result() {
-    ifstream resultFile("player_" + to_string(player) + ".result.json");
-    cereal::JSONInputArchive coords(resultFile);
-    int returnValue;
-    coords(returnValue);
-    if (returnValue == 1) {
-        return HIT;
-    }
-    if (returnValue == -1) {
-        return MISS;
-    }
-    if (returnValue == 0){
-        return OUT_OF_BOUNDS;
-    }
 }
+
 
 
 void Client::update_action_board(int result, unsigned int x, unsigned int y) {
-    vector<vector<int> > board(board_size, vector<int>(board_size));
-    ifstream local("player_" + to_string(player) + ".action_board.json");
-    cereal::JSONInputArchive getAction(local);
-    getAction(board);
-    board[x][y] = result;
-    local.close();
-    ofstream outFile("player_" + to_string(player) + ".action_board.json");
-    cereal::JSONOutputArchive updateAction(outFile);
-    updateAction(CEREAL_NVP(board));
 }
 
-string Client::render_action_board() {
-    vector<vector<int> > board(board_size, vector<int>(board_size));
-    ifstream local("player_" + to_string(player) + ".action_board.json");
-    cereal::JSONOutputArchive getAction(std::cout);
-    getAction(CEREAL_NVP(board));
-    //I have no Idea if this works. Copied the format from Cereal docs.
+
+string Client::render_action_board(){
 }
