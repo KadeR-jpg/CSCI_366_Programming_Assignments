@@ -47,6 +47,13 @@ void Server::initialize(unsigned int board_size,
 }
 
 
+Server::~Server() {
+}
+
+
+BitArray2D *Server::scan_setup_board(string setup_board_name){
+}
+
 int Server::evaluate_shot(unsigned int player, unsigned int x, unsigned int y) {
     if (x > board_size || y > board_size) { return OUT_OF_BOUNDS; }
     if (x < 0 || y < 0) { return OUT_OF_BOUNDS; }
