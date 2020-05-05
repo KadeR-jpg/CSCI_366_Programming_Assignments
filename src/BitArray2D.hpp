@@ -27,22 +27,22 @@ using namespace std;
 class BitArray2DException: public exception
 {
 private:
-   char *cstr;
+    char *cstr;
 
 public:
-   BitArray2DException(string message){
-      cstr = new char[message.size() + 1];
-      message.copy(cstr, message.size() + 1);
-      cstr[message.size()] = '\0';
-   }
+    BitArray2DException(string message){
+        cstr = new char[message.size() + 1];
+        message.copy(cstr, message.size() + 1);
+        cstr[message.size()] = '\0';
+    }
 
-   ~BitArray2DException(){
-      delete cstr;
-   }
+    ~BitArray2DException(){
+        delete cstr;
+    }
 
-   virtual const char* what() const throw(){
-      return cstr;
-   }
+    virtual const char* what() const throw(){
+        return cstr;
+    }
 };
 
 
@@ -68,42 +68,42 @@ extern "C" bool get_bit_elem(char *array, unsigned int row_width, unsigned int r
 
 class BitArray2D {
 private:
-   /**
-    * The 'char' types does not mean that each bit is stored as a character - we just need the pointer
-    * to have some type since there is no type for bit.
-    */
-   char* array = nullptr;
+    /**
+     * The 'char' types does not mean that each bit is stored as a character - we just need the pointer
+     * to have some type since there is no type for bit.
+     */
+    char* array = nullptr;
 
-   unsigned int rows;
-   unsigned int columns;
+    unsigned int rows;
+    unsigned int columns;
 
 public:
-   /**
-    * Sets up the array to store rows * columns bits
-    * @param rows - number of rows
-    * @param columns - number of columns
-    */
-   BitArray2D(unsigned int rows, unsigned int columns);
+    /**
+     * Sets up the array to store rows * columns bits
+     * @param rows - number of rows
+     * @param columns - number of columns
+     */
+    BitArray2D(unsigned int rows, unsigned int columns);
 
-   /**
-    * Deallocate memory used for array
-    */
-   ~BitArray2D();
+    /**
+     * Deallocate memory used for array
+     */
+    ~BitArray2D();
 
-   /**
-    * Get bit at row and column
-    * @param row
-    * @param column
-    * @return bit at row and column as bool
-    */
-   bool get(unsigned int row, unsigned int column);
+    /**
+     * Get bit at row and column
+     * @param row
+     * @param column
+     * @return bit at row and column as bool
+     */
+    bool get(unsigned int row, unsigned int column);
 
-   /**
-    * Set bit to true at row and column
-    * @param row
-    * @param column
-    */
-   void set(unsigned int row, unsigned int column);
+    /**
+     * Set bit to true at row and column
+     * @param row
+     * @param column
+     */
+    void set(unsigned int row, unsigned int column);
 };
 
 

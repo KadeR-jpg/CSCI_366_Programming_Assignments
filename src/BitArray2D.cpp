@@ -17,28 +17,40 @@
 #include <math.h>
 #include "BitArray2D.hpp"
 
-BitArray2D::BitArray2D(unsigned int rows, unsigned int columns) {
-
+BitArray2D::BitArray2D(unsigned int rows, unsigned int columns){
+    if (columns < 1 || rows < 1){
+        throw BitArray2DException("Wrong board size; Too Small");
+    } else if (columns > 10 || rows > 10){
+        throw BitArray2DException("Wrong board size; Too Large");
+    }
+    //allocating a memory block for array
+    array = (char *) calloc(rows * columns, sizeof(char));
+    this->rows = rows;
+    this->columns = columns;
 }
 
 
 BitArray2D::~BitArray2D() {
-
+    //deallocate the memory block of array
+    free(array);
 }
 
 
-bool BitArray2D::get(unsigned int row, unsigned int column){
-   // check array bounds
-
-   // get the element
-   return get_bit_elem(array, columns, row, column);
+bool BitArray2D::get(unsigned int row, unsigned int column) {
+    if (column >= 10 || row >= 10){
+        throw BitArray2DException("Wrong board size; Too big");
+    } else if (column < 1 || row < 1){
+        throw BitArray2DException("Wrong board size; Too small");
+    }
+    return get_bit_elem(array, columns, row, column);
 }
 
 
-
-void BitArray2D::set(unsigned int row, unsigned int column){
-   // check array bounds
-
-   // set the element
-   set_bit_elem(array, columns, row, column);
+void BitArray2D::set(unsigned int row, unsigned int column) {
+    if (column >= 10 || row >= 10){
+        throw BitArray2DException("Wrong board size; Too big");
+    } else if (column < 1 || row < 1){
+        throw BitArray2DException("Wrong board size; Too small");
+    }
+    set_bit_elem(array, columns, row, column);
 }

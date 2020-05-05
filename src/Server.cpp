@@ -48,10 +48,14 @@ void Server::initialize(unsigned int board_size,
 
 
 Server::~Server() {
+    free(p1_setup_board);
+    free(p2_setup_board);
 }
 
 
-BitArray2D *Server::scan_setup_board(string setup_board_name){
+BitArray2D *Server::scan_setup_board(string setup_board_name) {
+    BitArray2D *playerBoard = new BitArray2D(board_size, board_size);
+
 }
 
 int Server::evaluate_shot(unsigned int player, unsigned int x, unsigned int y) {
@@ -59,6 +63,11 @@ int Server::evaluate_shot(unsigned int player, unsigned int x, unsigned int y) {
     if (x < 0 || y < 0) { return OUT_OF_BOUNDS; }
     if (player < 1 || player > MAX_PLAYERS) {
         throw exception(ServerException("Player Number can only be 1 or 2"));
+    }
+    if (player == 1) {
+        player = 2;
+    } else {
+        player = 1;
     }
     ifstream localShot("player_" + to_string(player) + ".setup_board.txt");
     string hitOrMiss;
@@ -68,16 +77,37 @@ int Server::evaluate_shot(unsigned int player, unsigned int x, unsigned int y) {
     }
     hitOrMiss = line.at(x);
     localShot.close();
-    //I dont know why im failing the Hit_Detected test. This function grabs the line at y position and then
-    //the x value of that line.
     if (hitOrMiss != "_") {
-        cout << hitOrMiss;
         return HIT;
     } else {
         return MISS;
     }
 
 }
+
+//    ifstream localShot("player_" + to_string(player) + ".setup_board.txt");
+//    string hitOrMiss;
+//    std:string everyLine;
+//    std::string line;
+//    int i;
+//    //While loop works but i think its giving me a segmentation fault, tests won't run with this
+//    //while loop only debugger and stepping through the program. Otherwise i get
+//    //a exit code 139.
+//    while(std::getline(localShot, everyLine)) {
+//        boardLines[i] = everyLine;
+//        ++i;
+//    }
+//    line = boardLines.at(y);
+//    hitOrMiss = line.at(x);
+//    localShot.close();
+//
+//    if (hitOrMiss != "_") {
+//        return 1;
+//    } else {
+//        return MISS;
+//    }
+//
+//}
 
 
 int Server::process_shot(unsigned int player) {
@@ -86,32 +116,23 @@ int Server::process_shot(unsigned int player) {
             throw exception(ServerException("Bad player number"));
         }
     }
-    ifstream shotCoord("player_" + to_string(player) + ".shot.json");
+    string shotFile = ("player_" + to_string(player) + ".shot.json");
+    std::ifstream shotCoord(shotFile);
     int x, y;
     cereal::JSONInputArchive getCoord(shotCoord);
     getCoord(x, y);
-    shotCoord.close();
-    ofstream recordShot("player_" + to_string(player) + ".result.json");
-    int bang;
-    if((x||y) > 10){
-        return OUT_OF_BOUNDS;
-    } else {
-        bang = evaluate_shot(player, x, y);
-    }
-    if (bang == OUT_OF_BOUNDS) {
-        cereal::JSONOutputArchive writeShot(recordShot);
-        writeShot(cereal::make_nvp("result", OUT_OF_BOUNDS));
-        return SHOT_FILE_PROCESSED;
-    } else if (bang == HIT) {
-        cereal::JSONOutputArchive writeShot(recordShot);
-        writeShot(cereal::make_nvp("result", HIT));
-        return SHOT_FILE_PROCESSED;
-    } else if (bang == MISS) {
-        cereal::JSONOutputArchive writeShot(recordShot);
-        writeShot(cereal::make_nvp("result", MISS));
-        return SHOT_FILE_PROCESSED;
-    } else {
-        return NO_SHOT_FILE;
-    }
-    //remove stuff
+
+    int bang = evaluate_shot(player, x, y);
+    remove(shotFile.c_str());
+
+    string resultFile = ("player_" + to_string(player) + ".result.json");
+
+    ofstream shotResult(resultFile);
+    cereal::JSONOutputArchive writeResult(shotResult);
+    writeResult(cereal::make_nvp("result", bang));
+    shotResult.close();
+//    remove(shotFile.c_str());
+//    remove(resultFile.c_str());
+    return SHOT_FILE_PROCESSED;
+
 }

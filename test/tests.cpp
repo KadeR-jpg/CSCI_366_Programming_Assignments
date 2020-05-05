@@ -58,17 +58,17 @@ long get_diff_dist(string file1, string file2){
 TEST(BitArray2DCreate, Correct_1by1){
    BitArray2D *array;
    ASSERT_NO_THROW(array = new BitArray2D(1,1));
-}
+} //Passed
 
 TEST(BitArray2DCreate, Correct_10by10){
    BitArray2D *array;
    ASSERT_NO_THROW(array = new BitArray2D(10,10));
-}
+} // Passed
 
 TEST(BitArray2DCreate, Incorrect){
    BitArray2D *array;
    ASSERT_ANY_THROW(array = new BitArray2D(0,0));
-}
+} //Passed
 
 
 
@@ -115,35 +115,35 @@ TEST_F(BitArray2DSetGet, Nine){
    int row=0, col=9;
    array->set(row, col);
    ASSERT_EQ(1, array->get(row,col));
-}
+} //Passed
 
 TEST_F(BitArray2DSetGet, Ten){
    int row=9, col=1;
    array->set(row, col);
    ASSERT_EQ(1, array->get(row,col));
-}
+} //Passed
 
 TEST_F(BitArray2DSetGet, Hundred){
    int row=9, col=9;
    array->set(row, col);
    ASSERT_EQ(1, array->get(row,col));
-}
+} //Passed
 
 TEST_F(BitArray2DSetGet, Get_Out_Of_Bounds_High){
    ASSERT_ANY_THROW(array->get(BOARD_SIZE, BOARD_SIZE));
-}
+} //Passed
 
 TEST_F(BitArray2DSetGet, Get_Out_Of_Bounds_Low){
    ASSERT_ANY_THROW(array->get(-1, -1));
-}
+} //Passed
 
 TEST_F(BitArray2DSetGet, Set_Out_Of_Bounds_High){
    ASSERT_ANY_THROW(array->set(BOARD_SIZE, BOARD_SIZE));
-}
+} //Passed
 
 TEST_F(BitArray2DSetGet, Set_Out_Of_Bounds_Low){
    ASSERT_ANY_THROW(array->set(-1, -1));
-}
+} //Passed
 
 class ServerInitialize : public ::testing::Test{
 protected:
@@ -173,11 +173,11 @@ protected:
 
 TEST_F(ServerEvaluateShot, Hit_Detected){
     ASSERT_EQ(HIT, srv.evaluate_shot(1,9,0));
-}
+} //Passed
 
 TEST_F(ServerEvaluateShot, Miss_Detected){
     ASSERT_EQ(MISS, srv.evaluate_shot(1,9,1));
-}
+} //Passed
 
 TEST_F(ServerEvaluateShot, Out_Of_Bounds_X_High){
     ASSERT_EQ(OUT_OF_BOUNDS, srv.evaluate_shot(1,srv.board_size+1,1));
@@ -185,7 +185,7 @@ TEST_F(ServerEvaluateShot, Out_Of_Bounds_X_High){
 
 TEST_F(ServerEvaluateShot, Out_Of_Bounds_X_Low){
    ASSERT_EQ(OUT_OF_BOUNDS, srv.evaluate_shot(1,-1,1));
-}
+} //Passed
 
 TEST_F(ServerEvaluateShot, Out_Of_Bounds_Y_High){
     ASSERT_EQ(OUT_OF_BOUNDS, srv.evaluate_shot(1,1,srv.board_size+1));
@@ -193,7 +193,7 @@ TEST_F(ServerEvaluateShot, Out_Of_Bounds_Y_High){
 
 TEST_F(ServerEvaluateShot, Out_Of_Bounds_Y_Low){
    ASSERT_EQ(OUT_OF_BOUNDS, srv.evaluate_shot(1,1,-1));
-}
+} //Passed
 
 TEST_F(ServerEvaluateShot, Max_In_Bounds){
     ASSERT_NO_THROW(srv.evaluate_shot(1,srv.board_size-1,srv.board_size-1));
@@ -227,7 +227,8 @@ protected:
         remove("player_1.shot.json");
         remove("player_1.result.json");
     }
-};
+}; //4 of 8 tests passed, cant get JSON format correct.
+//Only like 4, 5, and 6 # of differences
 
 
 TEST_F(ServerProcessShot, Hit_Detected){
@@ -274,7 +275,7 @@ TEST_F(ServerProcessShot, Cleanup){
     srv.process_shot(1);
     ifstream f("player_1.shot.json");
     ASSERT_FALSE(f.good());
-}
+} //Passed
 
 
 class ClientInitialize : public ::testing::Test{
@@ -288,7 +289,7 @@ protected:
     void TearDown() override{
 //        remove("player_1.action_board.json");
     }
-}; //Passed
+}; //This was passing on last PROG but now im getting a difference of 123??
 
 TEST_F(ClientInitialize, Creates_Action_Board){
     ASSERT_EQ(0, get_diff_dist("player_1.action_board.json", "correct_start_action_board.json"));
@@ -366,7 +367,7 @@ protected:
     void TearDown() override{
         remove("player_1.result.json");
     }
-};
+}; //Passed All
 
 TEST_F(ClientGetResult, Return_Hit){
     set_up_result(HIT);
@@ -393,7 +394,7 @@ TEST_F(ClientGetResult, Cleanup){
    client.get_result();
     ifstream f("player_1.result.json");
     ASSERT_FALSE(f.good());
-}
+} //Passed
 
 
 class ClientUpdateActionBoard : public ::testing::Test{
